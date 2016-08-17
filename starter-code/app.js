@@ -1,4 +1,9 @@
-var app = angular.module('wineApp', []);
+var app = angular.module('wineApp', ['ngRoute', 'ngResource']);
+ app.factory('WineService', function ($resource){
+    return $resource('http://localhost:8000/wines/:id', {wine: "@wine"});
+ });
+// .controller('WinesIndexCtrl', WinesIndexCtrl)
+// .controller('WinesShowCtrl', WinesShowCtrl);
 
 console.log('Angular is working.');
 
@@ -6,18 +11,70 @@ console.log('Angular is working.');
 // ROUTES //
 ////////////
 
+app.config(function($routeProvider) {
+    $routeProvider
+
+    .when("/", {
+        templateUrl: '/templates/wines-index.html',
+        controller: 'WinesIndexCtrl'
+    })
+    .when("/wines/:id", {
+        templateUrl: '/templates/wines-show.html',
+        controller: 'WinesShowCtrl'
+    });
+    // $locationProvider.html5Mode({
+    //   enabled: true,
+    //   requireBase: false
+    // });
+});
 
 /////////////////
 // CONTROLLERS //
 /////////////////
+WinesIndexCtrl.$inject=['$resource', 'WineService'];
+WinesShowCtrl.$inject=['$resource', 'WineService'];
 
-app.controller('WinesIndexCtrl',function($scope){
-  console.log("Wine Index")
-})
+// function WineFactory($resource) {
+//     return $resource('http://localhost:8000/wines/:id', null, {
+//         query: {
+//             method: 'GET',
+//             isArray: true, 
+//             transformResponse: function(data) {
+//                 return angular.fromJson(data).wines;
+//               }
+//          }
+//      });   
+// }
 
-app.controller('WinesShowCtrl',function($scope){
-  console.log("Wine Show")
-})
+// function WinesIndexCtrl($resource, Wine){
+//     var self = this;
+//     this.all=[];
+//     this.newWine = {};
+
+//    function getWines(){
+//     Wine.query(function(wines){
+//         self.all = wines;
+//     });
+//     }
+
+
+// }
+
+// function WinesShowCtrl($resource, Wine){
+        
+//    }
+
+app.controller('WinesIndexCtrl', WinesIndexCtrl);
+function WinesIndexCtrl ($scope, WineService){
+  console.log("Wine Index");
+    $scope.wines = WineService.query();
+}
+
+app.controller('WinesShowCtrl', WinesShowCtrl);
+function WinesShowCtrl ($scope, WineService, $routeParams){
+  console.log($routeParams.id);
+  $scope.wine = WineService.get();
+}
 
 ////////////
 // MODELS //

@@ -1,1 +1,16 @@
-Welcome to Wine Show (templates/wines-show.html)
+ <div class="wine">
+           <div class="wines_show" ng-repeat="each in wine">	       
+	           	  <h1>{{ wine.name }}</h1>
+	           	  <h3>({{ wine.id }})</h3>
+	           	  <h3>${{ wine.price }}</h3>
+	           	  <h3><b>Year:</b> {{ wine.year }}</h3>
+	           	  <h3><b>Grapes:</b> {{ wine.grapes }}</h3>
+	           	  <h3><b>Region:</b> {{ wine.region }}</h3>
+	           	  <h3><b>Country:</b> {{ wine.country }}</h3>
+	           	  <h4><b>Created:</b> {{ wine.created_at }}</h4>
+	           	  <h4><b>Updated:</b> {{ wine.updated_at }}</h4>
+	           	  <p>{{ wine.description }}</p>
+	           	  <a href="#" target="blank"> {{ wine.picture }}</a>
+	           	
+           </div>        
+ </div>
